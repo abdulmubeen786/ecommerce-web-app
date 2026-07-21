@@ -29,11 +29,6 @@ app.use(
   }),
 );
 
-// Root route - test ke liye
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
-
 // user Routes
 app.use("/api", userRouter);
 app.use("/api", productRouter);

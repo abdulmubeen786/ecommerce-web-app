@@ -35,8 +35,7 @@ const Footer = () => {
       setMessage({ type: "success", text: "Successfully subscribed!" });
       setEmail("");
     } catch (error) {
-      const errMsg =
-        error?.response?.data?.message || "Something went wrong, try again.";
+      const errMsg = "Something went wrong, try again.";
       setMessage({ type: "error", text: errMsg });
     } finally {
       setLoading(false);

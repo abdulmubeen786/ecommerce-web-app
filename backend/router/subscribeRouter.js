@@ -1,8 +1,9 @@
 const express = require("express");
 const subscribeRoutes = express.Router();
 const Subscribe = require("../model/subscriber");
+const { protect } = require("../middleware/authmiddleware");
 
-subscribeRoutes.post("/subscribe", async (req, res) => {
+subscribeRoutes.post("/subscribe", protect, async (req, res) => {
   const { email } = req.body;
   if (!email) {
     return res.status(400).json({ message: "email not found" }); // FIX: 404 -> 400 (bad request, not "not found")
