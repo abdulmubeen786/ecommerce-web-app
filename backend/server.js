@@ -18,6 +18,7 @@ const uploadRoute = require("./router/uploadRoutes");
 const subscribeRoutes = require("./router/subscribeRouter");
 
 const CLIENT_URL = process.env.CLIENT_URL;
+
 app.use("/api", webhookRouter);
 app.use(express.json());
 app.use(cookieParser());
@@ -28,7 +29,10 @@ app.use(
   }),
 );
 
-const PORT = process.env.PORT || 5000;
+// Root route - test ke liye
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
 
 // user Routes
 app.use("/api", userRouter);
@@ -42,7 +46,16 @@ app.use("/api", adminOrderRoute);
 app.use("/api", adminRoute);
 app.use("/api", uploadRoute);
 app.use("/api", subscribeRoutes);
-app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
-});
+
+const PORT = process.env.PORT || 5000;
+
+// Local development mein hi listen karo, Vercel serverless mein nahi
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`server is running on port ${PORT}`);
+  });
+}
+
 dbConnection();
+
+module.exports = app;
