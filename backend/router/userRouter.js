@@ -44,28 +44,26 @@ proApp.post("/user/register", validate(signupSchema), async (req, res) => {
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: ACCESS_TOKEN_MAX_AGE,
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: REFRESH_TOKEN_MAX_AGE,
     });
 
-    return res
-      .status(201)
-      .json({
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        },
-      });
+    return res.status(201).json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "server error" });
@@ -93,27 +91,25 @@ proApp.post("/user/login", validate(loginSchema), async (req, res) => {
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: ACCESS_TOKEN_MAX_AGE,
     });
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: REFRESH_TOKEN_MAX_AGE,
     });
 
-    return res
-      .status(200)
-      .json({
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        },
-      });
+    return res.status(200).json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "server error" });
@@ -150,14 +146,14 @@ proApp.post("/user/refresh", async (req, res) => {
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: ACCESS_TOKEN_MAX_AGE,
     });
     res.cookie("refreshToken", freshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: REFRESH_TOKEN_MAX_AGE,
     });
     return res.status(200).json({ message: "token refreshed successfully" });
