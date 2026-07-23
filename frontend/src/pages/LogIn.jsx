@@ -13,7 +13,7 @@ const LoadingOverlay = () => (
     role="status"
     aria-live="polite"
     aria-label="Signing in, please wait"
-    className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm"
+    className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/70 backdrop-blur-md"
   >
     <svg
       className="animate-spin h-10 w-10 text-white mb-4"
@@ -43,22 +43,22 @@ const LoadingOverlay = () => (
 const ErrorBanner = ({ message, onDismiss }) => (
   <div
     role="alert"
-    className="flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 mb-5"
+    className="flex items-start gap-3 backdrop-blur-md bg-red-500/10 border border-red-400/30 text-red-100 rounded-xl px-4 py-3 mb-5"
   >
     <XCircle
       size={18}
-      className="mt-0.5 shrink-0 text-red-500"
+      className="mt-0.5 shrink-0 text-red-300"
       aria-hidden="true"
     />
     <div className="flex-1 text-sm leading-snug">
-      <p className="font-semibold mb-0.5">Login failed</p>
-      <p className="text-red-600">{message}</p>
+      <p className="font-semibold mb-0.5 text-red-200">Login failed</p>
+      <p className="text-red-200/80">{message}</p>
     </div>
     <button
       type="button"
       onClick={onDismiss}
       aria-label="Dismiss error"
-      className="text-red-400 hover:text-red-600 transition shrink-0"
+      className="text-red-300/70 hover:text-red-100 transition shrink-0"
     >
       <XCircle size={16} />
     </button>
@@ -114,111 +114,145 @@ const LogIn = () => {
       {/* Loading overlay — rendered outside the card so it covers full screen */}
       {loading && <LoadingOverlay />}
 
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-        <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-sm border">
-          <h1 className="text-3xl font-semibold text-center mb-2">Login</h1>
-          <p className="text-gray-500 text-center mb-6">
-            Sign in to your account
-          </p>
+      <section className="relative w-full min-h-screen overflow-hidden flex items-center justify-center px-4 py-16 bg-black">
+        {/* Ambient background glow — echoes Hero's dark gradient language */}
+        <div className="absolute inset-0 bg-gradient-to-b from-neutral-900 via-black to-neutral-950" />
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
 
-          {/* Error banner */}
-          {showError && (
-            <ErrorBanner
-              message={error}
-              onDismiss={() => setDismissedError(true)}
-            />
-          )}
-
-          <form onSubmit={formik.handleSubmit} className="space-y-4" noValidate>
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={`w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 transition
-                  ${
-                    isFieldError("email")
-                      ? "border-red-500 focus:ring-red-300 bg-red-50"
-                      : "border-gray-300 focus:ring-black"
-                  }`}
-              />
-              {isFieldError("email") && (
-                <p className="flex items-center gap-1 text-red-500 text-xs mt-1">
-                  <AlertCircle size={12} aria-hidden="true" />
-                  {formik.errors.email}
-                </p>
-              )}
+        {/* Content */}
+        <div className="relative w-full max-w-md">
+          <div className="backdrop-blur-xl bg-white/[0.06] border border-white/15 rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.5)] px-6 py-8 sm:px-10 sm:py-10">
+            {/* Glass badge */}
+            <div className="flex justify-center mb-5">
+              <span className="px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium tracking-wider uppercase backdrop-blur-md bg-white/10 border border-white/20 shadow-lg text-white/90">
+                Welcome Back
+              </span>
             </div>
 
-            {/* Password */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
-              <div className="relative">
+            <h1 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-wide mb-2 text-center drop-shadow-[0_2px_15px_rgba(0,0,0,0.6)] bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
+              Login
+            </h1>
+            <p className="text-sm sm:text-base text-gray-300/80 text-center mb-8">
+              Sign in to your account
+            </p>
+
+            {/* Error banner */}
+            {showError && (
+              <ErrorBanner
+                message={error}
+                onDismiss={() => setDismissedError(true)}
+              />
+            )}
+
+            <form
+              onSubmit={formik.handleSubmit}
+              className="space-y-5"
+              noValidate
+            >
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium mb-2 text-white/80">
+                  Email
+                </label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Enter your password"
-                  value={formik.values.password}
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full border rounded-lg px-4 py-3 pr-11 outline-none focus:ring-2 transition
+                  className={`w-full rounded-xl px-4 py-3 outline-none transition backdrop-blur-md text-white placeholder:text-white/40
                     ${
-                      isFieldError("password")
-                        ? "border-red-500 focus:ring-red-300 bg-red-50"
-                        : "border-gray-300 focus:ring-black"
+                      isFieldError("email")
+                        ? "bg-red-500/10 border border-red-400/40 focus:ring-2 focus:ring-red-400/40"
+                        : "bg-white/5 border border-white/20 focus:ring-2 focus:ring-white/40 focus:bg-white/10"
                     }`}
                 />
+                {isFieldError("email") && (
+                  <p className="flex items-center gap-1 text-red-300 text-xs mt-1.5">
+                    <AlertCircle size={12} aria-hidden="true" />
+                    {formik.errors.email}
+                  </p>
+                )}
+              </div>
+
+              {/* Password */}
+              <div>
+                <label className="block text-sm font-medium mb-2 text-white/80">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Enter your password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={`w-full rounded-xl px-4 py-3 pr-11 outline-none transition backdrop-blur-md text-white placeholder:text-white/40
+                      ${
+                        isFieldError("password")
+                          ? "bg-red-500/10 border border-red-400/40 focus:ring-2 focus:ring-red-400/40"
+                          : "bg-white/5 border border-white/20 focus:ring-2 focus:ring-white/40 focus:bg-white/10"
+                      }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80 transition"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                {isFieldError("password") && (
+                  <p className="flex items-center gap-1 text-red-300 text-xs mt-1.5">
+                    <AlertCircle size={12} aria-hidden="true" />
+                    {formik.errors.password}
+                  </p>
+                )}
+              </div>
+
+              {/* Forgot password */}
+              <div className="flex items-center justify-between text-sm">
                 <button
                   type="button"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition"
+                  className="text-white/70 hover:text-white hover:underline transition"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  Forgot Password?
                 </button>
               </div>
-              {isFieldError("password") && (
-                <p className="flex items-center gap-1 text-red-500 text-xs mt-1">
-                  <AlertCircle size={12} aria-hidden="true" />
-                  {formik.errors.password}
-                </p>
-              )}
-            </div>
 
-            {/* Forgot password */}
-            <div className="flex items-center justify-between text-sm">
-              <button type="button" className="text-blue-600 hover:underline">
-                Forgot Password?
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading || !formik.isValid || !formik.dirty}
+                className="group relative w-full inline-flex items-center justify-center gap-2 bg-white/90 backdrop-blur-md text-black px-8 py-3.5 rounded-full font-semibold overflow-hidden shadow-[0_8px_30px_rgba(255,255,255,0.25)] hover:shadow-[0_8px_40px_rgba(255,255,255,0.45)] border border-white/50 transition-all duration-300 hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+              >
+                <span className="relative z-10">Login</span>
+                <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+                {/* Shine sweep effect */}
+                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-black/10 to-transparent" />
               </button>
-            </div>
+            </form>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading || !formik.isValid || !formik.dirty}
-              className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition
-                disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Login
-            </button>
-          </form>
-
-          <p className="text-center text-sm text-gray-600 mt-6">
-            Don't have an account?{" "}
-            <Link
-              to={`/register?redirect=${encodeURIComponent(redirect)}`}
-              className="text-blue-600 hover:underline font-medium"
-            >
-              Sign Up
-            </Link>
-          </p>
+            <p className="text-center text-sm text-gray-300/70 mt-8">
+              Don't have an account?{" "}
+              <Link
+                to={`/register?redirect=${encodeURIComponent(redirect)}`}
+                className="text-white font-medium hover:underline"
+              >
+                Sign Up
+              </Link>
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

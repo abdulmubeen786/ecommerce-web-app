@@ -39,11 +39,12 @@ const SearchBar = () => {
       return;
     }
 
-    setError("");
     dispatch(setFilters({ search: searchTerm }));
     dispatch(fetchProductByFilters({ search: searchTerm }));
     navigate(`/collections/all?search=${searchTerm}`);
-    setSearchTerm("");
+
+    // ✅ auto-close (slide back up) once the search is submitted
+    handleClose();
   };
 
   return (
@@ -64,8 +65,8 @@ const SearchBar = () => {
           bg-white/70 backdrop-blur-xl border-b border-white/40
           shadow-[0_4px_30px_rgba(0,0,0,0.08)]
           flex items-center px-4 md:px-8 h-16
-          transition-transform duration-300 ease-in-out
-          ${isOpen ? "translate-y-0" : "-translate-y-full"}
+          transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+          ${isOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}
         `}
       >
         <form
@@ -112,12 +113,15 @@ const SearchBar = () => {
         </form>
       </div>
 
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
-          onClick={handleClose}
-        />
-      )}
+      {/* backdrop — always mounted, fades in/out smoothly instead of popping */}
+      <div
+        onClick={handleClose}
+        className={`fixed inset-0 z-50 bg-black/20 backdrop-blur-sm transition-opacity duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+      />
     </>
   );
 };

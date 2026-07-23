@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 
 const FilterSideBar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -132,230 +133,278 @@ const FilterSideBar = () => {
         </button>
       </div>
 
-      {/* Category Filter */}
-      <div className="mb-6 pb-6 border-b border-gray-100">
-        <label className="block font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
-          Category
-        </label>
+      {/* Category Filter — hover to reveal */}
+      <div className="group mb-6 pb-6 border-b border-gray-100">
+        <div className="flex items-center justify-between cursor-default select-none">
+          <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+            Category
+          </label>
+          <ChevronDown
+            size={16}
+            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+          />
+        </div>
 
-        <div className="space-y-2.5">
-          {categorys.map((category) => (
-            <label
-              key={category}
-              className="flex items-center gap-3 text-sm cursor-pointer group"
-            >
-              <span className="relative flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 border-gray-300 group-hover:border-gray-400 transition-colors">
-                <input
-                  type="radio"
-                  name="category"
-                  checked={filter.category === category}
-                  onChange={() => updateFilter("category", category)}
-                  className="peer absolute inset-0 opacity-0 cursor-pointer"
-                />
-                <span className="w-2.5 h-2.5 rounded-full bg-black scale-0 peer-checked:scale-100 transition-transform duration-200"></span>
-              </span>
-              <span className="text-gray-700 peer-checked:text-black group-hover:text-black transition-colors">
-                {category}
-              </span>
-            </label>
-          ))}
+        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+          <div className="space-y-2.5">
+            {categorys.map((category) => (
+              <label
+                key={category}
+                className="flex items-center gap-3 text-sm cursor-pointer group/item"
+              >
+                <span className="relative flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 border-gray-300 group-hover/item:border-gray-400 transition-colors">
+                  <input
+                    type="radio"
+                    name="category"
+                    checked={filter.category === category}
+                    onChange={() => updateFilter("category", category)}
+                    className="peer absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                  <span className="w-2.5 h-2.5 rounded-full bg-black scale-0 peer-checked:scale-100 transition-transform duration-200"></span>
+                </span>
+                <span className="text-gray-700 peer-checked:text-black group-hover/item:text-black transition-colors">
+                  {category}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Gender Filter */}
-      <div className="mb-6 pb-6 border-b border-gray-100">
-        <label className="block font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
-          Gender
-        </label>
+      {/* Gender Filter — hover to reveal */}
+      <div className="group mb-6 pb-6 border-b border-gray-100">
+        <div className="flex items-center justify-between cursor-default select-none">
+          <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+            Gender
+          </label>
+          <ChevronDown
+            size={16}
+            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+          />
+        </div>
 
-        <div className="space-y-2.5">
-          {genders.map((gender) => (
-            <label
-              key={gender}
-              className="flex items-center gap-3 text-sm cursor-pointer group"
-            >
-              <span className="relative flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 border-gray-300 group-hover:border-gray-400 transition-colors">
-                <input
-                  type="radio"
-                  name="gender"
-                  checked={filter.gender === gender}
-                  onChange={() => updateFilter("gender", gender)}
-                  className="peer absolute inset-0 opacity-0 cursor-pointer"
-                />
-                <span className="w-2.5 h-2.5 rounded-full bg-black scale-0 peer-checked:scale-100 transition-transform duration-200"></span>
-              </span>
-              <span className="text-gray-700 group-hover:text-black transition-colors">
-                {gender}
-              </span>
-            </label>
-          ))}
+        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+          <div className="space-y-2.5">
+            {genders.map((gender) => (
+              <label
+                key={gender}
+                className="flex items-center gap-3 text-sm cursor-pointer group/item"
+              >
+                <span className="relative flex items-center justify-center w-[18px] h-[18px] rounded-full border-2 border-gray-300 group-hover/item:border-gray-400 transition-colors">
+                  <input
+                    type="radio"
+                    name="gender"
+                    checked={filter.gender === gender}
+                    onChange={() => updateFilter("gender", gender)}
+                    className="peer absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                  <span className="w-2.5 h-2.5 rounded-full bg-black scale-0 peer-checked:scale-100 transition-transform duration-200"></span>
+                </span>
+                <span className="text-gray-700 group-hover/item:text-black transition-colors">
+                  {gender}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Colors Filter */}
-      <div className="mb-6 pb-6 border-b border-gray-100">
-        <label className="block font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
-          Colors
-        </label>
-
-        <div className="flex flex-wrap gap-3">
-          {colors.map((color, index) => (
-            <button
-              key={`${color}-${index}`}
-              type="button"
-              title={color}
-              onClick={() =>
-                updateFilter(
-                  "colors",
-                  filter.colors.includes(color)
-                    ? filter.colors.filter((c) => c !== color)
-                    : [...filter.colors, color],
-                )
-              }
-              style={{ background: colorMap[color] || color.toLowerCase() }}
-              className={`w-8 h-8 rounded-full border border-white shadow-md hover:scale-110 transition-all duration-200 ${
-                filter.colors.includes(color)
-                  ? "ring-2 ring-black ring-offset-2 scale-110"
-                  : "ring-1 ring-gray-200"
-              }`}
-            />
-          ))}
+      {/* Colors Filter — hover to reveal */}
+      <div className="group mb-6 pb-6 border-b border-gray-100">
+        <div className="flex items-center justify-between cursor-default select-none">
+          <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+            Colors
+          </label>
+          <ChevronDown
+            size={16}
+            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+          />
         </div>
-      </div>
 
-      {/* Size Filter */}
-      <div className="mb-6 pb-6 border-b border-gray-100">
-        <label className="block font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
-          Size
-        </label>
-
-        <div className="flex flex-wrap gap-2">
-          {sizes.map((size) => {
-            const active = filter.sizes.includes(size);
-            return (
+        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+          <div className="flex flex-wrap gap-3">
+            {colors.map((color, index) => (
               <button
-                key={size}
+                key={`${color}-${index}`}
                 type="button"
+                title={color}
                 onClick={() =>
                   updateFilter(
-                    "sizes",
-                    active
-                      ? filter.sizes.filter((s) => s !== size)
-                      : [...filter.sizes, size],
+                    "colors",
+                    filter.colors.includes(color)
+                      ? filter.colors.filter((c) => c !== color)
+                      : [...filter.colors, color],
                   )
                 }
-                className={`w-10 h-10 flex items-center justify-center text-sm font-semibold rounded-lg border transition-all duration-200 ${
-                  active
-                    ? "bg-black text-white border-black shadow-md scale-105"
-                    : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                style={{ background: colorMap[color] || color.toLowerCase() }}
+                className={`w-8 h-8 rounded-full border border-white shadow-md hover:scale-110 transition-all duration-200 ${
+                  filter.colors.includes(color)
+                    ? "ring-2 ring-black ring-offset-2 scale-110"
+                    : "ring-1 ring-gray-200"
                 }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Size Filter — hover to reveal */}
+      <div className="group mb-6 pb-6 border-b border-gray-100">
+        <div className="flex items-center justify-between cursor-default select-none">
+          <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+            Size
+          </label>
+          <ChevronDown
+            size={16}
+            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+          />
+        </div>
+
+        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+          <div className="flex flex-wrap gap-2">
+            {sizes.map((size) => {
+              const active = filter.sizes.includes(size);
+              return (
+                <button
+                  key={size}
+                  type="button"
+                  onClick={() =>
+                    updateFilter(
+                      "sizes",
+                      active
+                        ? filter.sizes.filter((s) => s !== size)
+                        : [...filter.sizes, size],
+                    )
+                  }
+                  className={`w-10 h-10 flex items-center justify-center text-sm font-semibold rounded-lg border transition-all duration-200 ${
+                    active
+                      ? "bg-black text-white border-black shadow-md scale-105"
+                      : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                  }`}
+                >
+                  {size}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Material Filter — hover to reveal */}
+      <div className="group mb-6 pb-6 border-b border-gray-100">
+        <div className="flex items-center justify-between cursor-default select-none">
+          <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+            Material
+          </label>
+          <ChevronDown
+            size={16}
+            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+          />
+        </div>
+
+        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+          <div className="space-y-2.5 max-h-40 overflow-y-auto pr-1">
+            {materials.map((material) => (
+              <label
+                key={material}
+                className="flex items-center gap-3 text-sm cursor-pointer group/item"
               >
-                {size}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Material Filter */}
-      <div className="mb-6 pb-6 border-b border-gray-100">
-        <label className="block font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
-          Material
-        </label>
-
-        <div className="space-y-2.5 max-h-40 overflow-y-auto pr-1">
-          {materials.map((material) => (
-            <label
-              key={material}
-              className="flex items-center gap-3 text-sm cursor-pointer group"
-            >
-              <span className="relative flex items-center justify-center w-[18px] h-[18px] rounded-md border-2 border-gray-300 group-hover:border-gray-400 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={filter.material.includes(material)}
-                  onChange={() =>
-                    updateFilter(
-                      "material",
-                      filter.material.includes(material)
-                        ? filter.material.filter((m) => m !== material)
-                        : [...filter.material, material],
-                    )
-                  }
-                  className="peer absolute inset-0 opacity-0 cursor-pointer"
-                />
-                <svg
-                  className="w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-200"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={3}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
+                <span className="relative flex items-center justify-center w-[18px] h-[18px] rounded-md border-2 border-gray-300 group-hover/item:border-gray-400 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={filter.material.includes(material)}
+                    onChange={() =>
+                      updateFilter(
+                        "material",
+                        filter.material.includes(material)
+                          ? filter.material.filter((m) => m !== material)
+                          : [...filter.material, material],
+                      )
+                    }
+                    className="peer absolute inset-0 opacity-0 cursor-pointer"
                   />
-                </svg>
-                <span className="absolute inset-0 rounded-md bg-black scale-0 peer-checked:scale-100 transition-transform duration-200 -z-10"></span>
-              </span>
-              <span className="text-gray-700 group-hover:text-black transition-colors">
-                {material}
-              </span>
-            </label>
-          ))}
+                  <svg
+                    className="w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-200"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 rounded-md bg-black scale-0 peer-checked:scale-100 transition-transform duration-200 -z-10"></span>
+                </span>
+                <span className="text-gray-700 group-hover/item:text-black transition-colors">
+                  {material}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Brand Filter */}
-      <div className="mb-6 pb-6 border-b border-gray-100">
-        <label className="block font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
-          Brand
-        </label>
+      {/* Brand Filter — hover to reveal */}
+      <div className="group mb-6 pb-6 border-b border-gray-100">
+        <div className="flex items-center justify-between cursor-default select-none">
+          <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+            Brand
+          </label>
+          <ChevronDown
+            size={16}
+            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+          />
+        </div>
 
-        <div className="space-y-2.5 max-h-40 overflow-y-auto pr-1">
-          {brands.map((brand) => (
-            <label
-              key={brand}
-              className="flex items-center gap-3 text-sm cursor-pointer group"
-            >
-              <span className="relative flex items-center justify-center w-[18px] h-[18px] rounded-md border-2 border-gray-300 group-hover:border-gray-400 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={filter.brand.includes(brand)}
-                  onChange={() =>
-                    updateFilter(
-                      "brand",
-                      filter.brand.includes(brand)
-                        ? filter.brand.filter((b) => b !== brand)
-                        : [...filter.brand, brand],
-                    )
-                  }
-                  className="peer absolute inset-0 opacity-0 cursor-pointer"
-                />
-                <svg
-                  className="w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-200"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={3}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
+        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+          <div className="space-y-2.5 max-h-40 overflow-y-auto pr-1">
+            {brands.map((brand) => (
+              <label
+                key={brand}
+                className="flex items-center gap-3 text-sm cursor-pointer group/item"
+              >
+                <span className="relative flex items-center justify-center w-[18px] h-[18px] rounded-md border-2 border-gray-300 group-hover/item:border-gray-400 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={filter.brand.includes(brand)}
+                    onChange={() =>
+                      updateFilter(
+                        "brand",
+                        filter.brand.includes(brand)
+                          ? filter.brand.filter((b) => b !== brand)
+                          : [...filter.brand, brand],
+                      )
+                    }
+                    className="peer absolute inset-0 opacity-0 cursor-pointer"
                   />
-                </svg>
-                <span className="absolute inset-0 rounded-md bg-black scale-0 peer-checked:scale-100 transition-transform duration-200 -z-10"></span>
-              </span>
-              <span className="text-gray-700 group-hover:text-black transition-colors">
-                {brand}
-              </span>
-            </label>
-          ))}
+                  <svg
+                    className="w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-200"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 rounded-md bg-black scale-0 peer-checked:scale-100 transition-transform duration-200 -z-10"></span>
+                </span>
+                <span className="text-gray-700 group-hover/item:text-black transition-colors">
+                  {brand}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Price Range */}
+      {/* Price Range — always visible (slider, not a list) */}
       <div>
         <label className="block font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
           Price Range

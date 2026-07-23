@@ -48,6 +48,13 @@ const passwordRequirements = [
   },
 ];
 
+const strengthTextColor = {
+  Weak: "text-red-300",
+  Fair: "text-yellow-300",
+  Good: "text-blue-300",
+  Strong: "text-green-300",
+};
+
 const RegisterUser = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -96,237 +103,263 @@ const RegisterUser = () => {
 
   const passwordStrength = getPasswordStrength(formik.values.password);
 
+  const inputClass = (field) =>
+    `w-full rounded-xl px-4 py-3 outline-none transition backdrop-blur-md text-white placeholder:text-white/40
+    ${
+      isFieldError(field)
+        ? "bg-red-500/10 border border-red-400/40 focus:ring-2 focus:ring-red-400/40"
+        : "bg-white/5 border border-white/20 focus:ring-2 focus:ring-white/40 focus:bg-white/10"
+    }`;
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-10">
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-sm border">
-        <h1 className="text-3xl font-semibold text-center mb-2">
-          Create Account
-        </h1>
-        <p className="text-gray-500 text-center text-sm mb-6">
-          Sign up to get started
-        </p>
+    <section className="relative w-full min-h-screen overflow-hidden flex items-center justify-center px-4 py-16 bg-black">
+      {/* Ambient background glow — echoes Hero's dark gradient language */}
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-900 via-black to-neutral-950" />
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
+      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
 
-        {/* ✅ Backend error */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg mb-5">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={formik.handleSubmit} className="space-y-4" noValidate>
-          {/* Name */}
-          <div>
-            <label className="block text-sm font-medium mb-2">Full Name</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your full name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className={`w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 transition
-                ${
-                  isFieldError("name")
-                    ? "border-red-500 focus:ring-red-300 bg-red-50"
-                    : "border-gray-300 focus:ring-black"
-                }`}
-            />
-            {isFieldError("name") && (
-              <p className="text-red-500 text-xs mt-1">{formik.errors.name}</p>
-            )}
+      {/* Content */}
+      <div className="relative w-full max-w-md">
+        <div className="backdrop-blur-xl bg-white/[0.06] border border-white/15 rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.5)] px-6 py-8 sm:px-10 sm:py-10">
+          {/* Glass badge */}
+          <div className="flex justify-center mb-5">
+            <span className="px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium tracking-wider uppercase backdrop-blur-md bg-white/10 border border-white/20 shadow-lg text-white/90">
+              Join Us
+            </span>
           </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className={`w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 transition
-                ${
-                  isFieldError("email")
-                    ? "border-red-500 focus:ring-red-300 bg-red-50"
-                    : "border-gray-300 focus:ring-black"
-                }`}
-            />
-            {isFieldError("email") && (
-              <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>
-            )}
-          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-wide mb-2 text-center drop-shadow-[0_2px_15px_rgba(0,0,0,0.6)] bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
+            Create Account
+          </h1>
+          <p className="text-sm sm:text-base text-gray-300/80 text-center mb-8">
+            Sign up to get started
+          </p>
 
-          {/* Password */}
-          <div>
-            <label className="block text-sm font-medium mb-2">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Create a strong password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={(e) => {
-                  formik.handleBlur(e);
-                  setShowRequirements(false);
-                }}
-                onFocus={() => setShowRequirements(true)}
-                className={`w-full border rounded-lg px-4 py-3 pr-11 outline-none focus:ring-2 transition
-                  ${
-                    isFieldError("password")
-                      ? "border-red-500 focus:ring-red-300 bg-red-50"
-                      : "border-gray-300 focus:ring-black"
-                  }`}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+          {/* ✅ Backend error */}
+          {error && (
+            <div className="backdrop-blur-md bg-red-500/10 border border-red-400/30 text-red-200 text-sm px-4 py-3 rounded-xl mb-5">
+              {error}
             </div>
+          )}
 
-            {/* ✅ Password Strength Bar */}
-            {formik.values.password && passwordStrength && (
-              <div className="mt-2">
-                <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all duration-300 ${passwordStrength.color} ${passwordStrength.width}`}
-                  />
-                </div>
-                <p
-                  className={`text-xs mt-1 font-medium
-                  ${passwordStrength.level === "Weak" ? "text-red-500" : ""}
-                  ${passwordStrength.level === "Fair" ? "text-yellow-600" : ""}
-                  ${passwordStrength.level === "Good" ? "text-blue-600" : ""}
-                  ${passwordStrength.level === "Strong" ? "text-green-600" : ""}
-                `}
-                >
-                  Password strength: {passwordStrength.level}
-                </p>
-              </div>
-            )}
-
-            {/* ✅ Password Requirements Checklist */}
-            {(showRequirements || formik.values.password) && (
-              <ul className="mt-2 space-y-1">
-                {passwordRequirements.map(({ key, label, test }) => {
-                  const passed = test(formik.values.password);
-                  return (
-                    <li key={key} className="flex items-center gap-1.5 text-xs">
-                      {passed ? (
-                        <CheckCircle2
-                          size={13}
-                          className="text-green-500 shrink-0"
-                        />
-                      ) : (
-                        <XCircle size={13} className="text-gray-300 shrink-0" />
-                      )}
-                      <span
-                        className={passed ? "text-green-600" : "text-gray-400"}
-                      >
-                        {label}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-
-            {isFieldError("password") && (
-              <p className="text-red-500 text-xs mt-1">
-                {formik.errors.password}
-              </p>
-            )}
-          </div>
-
-          {/* Confirm Password */}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Confirm Password
-            </label>
-            <div className="relative">
+          <form onSubmit={formik.handleSubmit} className="space-y-5" noValidate>
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-medium mb-2 text-white/80">
+                Full Name
+              </label>
               <input
-                type={showConfirmPassword ? "text" : "password"}
-                name="confirmPassword"
-                placeholder="Re-enter your password"
-                value={formik.values.confirmPassword}
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                value={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className={`w-full border rounded-lg px-4 py-3 pr-11 outline-none focus:ring-2 transition
-                  ${
-                    isFieldError("confirmPassword")
-                      ? "border-red-500 focus:ring-red-300 bg-red-50"
-                      : "border-gray-300 focus:ring-black"
-                  }`}
+                className={inputClass("name")}
               />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
-              >
-                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+              {isFieldError("name") && (
+                <p className="text-red-300 text-xs mt-1.5">
+                  {formik.errors.name}
+                </p>
+              )}
             </div>
-            {isFieldError("confirmPassword") && (
-              <p className="text-red-500 text-xs mt-1">
-                {formik.errors.confirmPassword}
-              </p>
-            )}
-          </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading || !formik.isValid || !formik.dirty}
-            className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition
-              disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg
-                  className="animate-spin h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium mb-2 text-white/80">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className={inputClass("email")}
+              />
+              {isFieldError("email") && (
+                <p className="text-red-300 text-xs mt-1.5">
+                  {formik.errors.email}
+                </p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium mb-2 text-white/80">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Create a strong password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={(e) => {
+                    formik.handleBlur(e);
+                    setShowRequirements(false);
+                  }}
+                  onFocus={() => setShowRequirements(true)}
+                  className={`${inputClass("password")} pr-11`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80 transition"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8z"
-                  />
-                </svg>
-                Creating account...
-              </span>
-            ) : (
-              "Register"
-            )}
-          </button>
-        </form>
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
 
-        <p className="text-center text-sm text-gray-600 mt-6">
-          Already have an account?{" "}
-          <Link
-            to={`/login?redirect=${encodeURIComponent(redirect)}`}
-            className="text-blue-600 hover:underline font-medium"
-          >
-            Log In
-          </Link>
-        </p>
+              {/* ✅ Password Strength Bar */}
+              {formik.values.password && passwordStrength && (
+                <div className="mt-2">
+                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-300 ${passwordStrength.color} ${passwordStrength.width}`}
+                    />
+                  </div>
+                  <p
+                    className={`text-xs mt-1 font-medium ${
+                      strengthTextColor[passwordStrength.level]
+                    }`}
+                  >
+                    Password strength: {passwordStrength.level}
+                  </p>
+                </div>
+              )}
+
+              {/* ✅ Password Requirements Checklist */}
+              {(showRequirements || formik.values.password) && (
+                <ul className="mt-2 space-y-1">
+                  {passwordRequirements.map(({ key, label, test }) => {
+                    const passed = test(formik.values.password);
+                    return (
+                      <li
+                        key={key}
+                        className="flex items-center gap-1.5 text-xs"
+                      >
+                        {passed ? (
+                          <CheckCircle2
+                            size={13}
+                            className="text-green-400 shrink-0"
+                          />
+                        ) : (
+                          <XCircle
+                            size={13}
+                            className="text-white/25 shrink-0"
+                          />
+                        )}
+                        <span
+                          className={
+                            passed ? "text-green-300" : "text-white/40"
+                          }
+                        >
+                          {label}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+
+              {isFieldError("password") && (
+                <p className="text-red-300 text-xs mt-1.5">
+                  {formik.errors.password}
+                </p>
+              )}
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-sm font-medium mb-2 text-white/80">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="Re-enter your password"
+                  value={formik.values.confirmPassword}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={`${inputClass("confirmPassword")} pr-11`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80 transition"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
+                </button>
+              </div>
+              {isFieldError("confirmPassword") && (
+                <p className="text-red-300 text-xs mt-1.5">
+                  {formik.errors.confirmPassword}
+                </p>
+              )}
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading || !formik.isValid || !formik.dirty}
+              className="group relative w-full inline-flex items-center justify-center gap-2 bg-white/90 backdrop-blur-md text-black px-8 py-3.5 rounded-full font-semibold overflow-hidden shadow-[0_8px_30px_rgba(255,255,255,0.25)] hover:shadow-[0_8px_40px_rgba(255,255,255,0.45)] border border-white/50 transition-all duration-300 hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+            >
+              {loading ? (
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  <svg
+                    className="animate-spin h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    />
+                  </svg>
+                  Creating account...
+                </span>
+              ) : (
+                <>
+                  <span className="relative z-10">Register</span>
+                  <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </>
+              )}
+              {/* Shine sweep effect */}
+              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-black/10 to-transparent" />
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-gray-300/70 mt-8">
+            Already have an account?{" "}
+            <Link
+              to={`/login?redirect=${encodeURIComponent(redirect)}`}
+              className="text-white font-medium hover:underline"
+            >
+              Log In
+            </Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
