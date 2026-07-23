@@ -134,7 +134,19 @@ const ProductDetail = ({ productId }) => {
   }
 
   return (
-    <div className="bg-gradient-to-b from-white to-gray-50">
+    <div className="bg-white">
+      {/* Local keyframes — scoped to this page */}
+      <style>{`
+        @keyframes pdFadeUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pdLineGrow {
+          from { width: 0; opacity: 0; }
+          to { width: 32px; opacity: 1; }
+        }
+      `}</style>
+
       <div className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* LEFT SIDE: Images */}
         <div className="flex flex-col md:flex-row gap-4">
@@ -147,57 +159,69 @@ const ProductDetail = ({ productId }) => {
                 onClick={() => setMainImage(item)}
                 className={`w-20 h-20 object-cover rounded-lg cursor-pointer border-2 transition-all duration-300 flex-shrink-0 ${
                   mainImage.url === item.url
-                    ? "border-black shadow-md scale-105"
+                    ? "border-[#C9A85E] shadow-md scale-105"
                     : "border-transparent opacity-60 hover:opacity-100 hover:shadow-sm"
                 }`}
               />
             ))}
           </div>
 
-          <div className="flex-1 order-1 md:order-2 overflow-hidden rounded-2xl bg-gray-50 shadow-lg border border-white/60 relative">
+          <div className="flex-1 order-1 md:order-2 overflow-hidden rounded-2xl bg-[#FAF9F6] shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-[#E8E6E1] relative">
             <img
               src={mainImage.url}
               alt={mainImage.altText}
               className="w-full h-72 sm:h-96 md:h-[500px] object-cover transition-transform duration-500 hover:scale-105"
             />
             {/* glossy top sheen */}
-            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
+            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white/25 to-transparent pointer-events-none"></div>
           </div>
         </div>
 
         {/* RIGHT SIDE: Details */}
-        <div className="flex flex-col justify-center space-y-6">
+        <div
+          className="flex flex-col justify-center space-y-7"
+          style={{
+            animation: "pdFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both",
+          }}
+        >
           <div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            {selectProduct.brand && (
+              <span className="text-[11px] font-medium tracking-[0.3em] uppercase text-[#8A6A3D]">
+                {selectProduct.brand}
+              </span>
+            )}
+
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] tracking-tight mt-2 mb-3">
               {selectProduct.name}
             </h1>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-yellow-400">★★★★☆</span>
-              <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">
+
+            <div className="flex items-center gap-2 mb-5">
+              <span className="text-[#C9A85E] tracking-tight">★★★★☆</span>
+              <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                 (12 Reviews)
               </span>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-              <p className="text-2xl sm:text-3xl font-bold text-black">
+              <p className="text-2xl sm:text-3xl font-semibold text-[#1A1A1A]">
                 ${selectProduct.price}
               </p>
               <p className="text-lg sm:text-xl text-gray-400 line-through">
                 ${selectProduct.originalPrice}
               </p>
-              <span className="bg-red-50 text-red-600 px-2 py-0.5 rounded-full text-xs font-bold ring-1 ring-red-600/10 shadow-sm italic">
-                SALE
+              <span className="bg-[#8A6A3D]/10 text-[#8A6A3D] px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider">
+                Sale
               </span>
             </div>
           </div>
 
-          <p className="text-gray-600 leading-relaxed text-base sm:text-lg">
+          <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
             {selectProduct.description}
           </p>
 
           {/* Colors */}
           <div>
-            <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-3">
+            <h2 className="text-[11px] font-medium tracking-[0.25em] uppercase text-gray-400 mb-3">
               Colors
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -207,8 +231,8 @@ const ProductDetail = ({ productId }) => {
                   onClick={() => setSelectedColor(color)}
                   className={`flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-300 ${
                     selectedColor === color
-                      ? "bg-black text-white border-black shadow-md scale-105"
-                      : "border-gray-200 text-gray-600 hover:bg-gray-50 hover:shadow-sm"
+                      ? "bg-[#1A1A1A] text-white border-[#1A1A1A] shadow-md scale-105"
+                      : "border-gray-200 text-gray-600 hover:border-[#C9A85E]/50 hover:bg-[#FAF9F6]"
                   }`}
                 >
                   <span
@@ -229,7 +253,7 @@ const ProductDetail = ({ productId }) => {
 
           {/* Sizes */}
           <div>
-            <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-3">
+            <h2 className="text-[11px] font-medium tracking-[0.25em] uppercase text-gray-400 mb-3">
               Sizes
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -237,10 +261,10 @@ const ProductDetail = ({ productId }) => {
                 <button
                   key={i}
                   onClick={() => setSelectedSize(size)}
-                  className={`w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl border-2 font-bold text-sm transition-all duration-300 ${
+                  className={`w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl border-2 font-semibold text-sm transition-all duration-300 ${
                     selectedSize === size
-                      ? "bg-black border-black text-white shadow-md scale-105"
-                      : "border-gray-100 hover:border-gray-300 text-gray-600 hover:shadow-sm"
+                      ? "bg-[#1A1A1A] border-[#1A1A1A] text-white shadow-md scale-105"
+                      : "border-gray-100 hover:border-[#C9A85E]/60 text-gray-600 hover:shadow-sm"
                   }`}
                 >
                   {size}
@@ -252,19 +276,19 @@ const ProductDetail = ({ productId }) => {
           {/* Quantity and CTA */}
           <div className="pt-4 space-y-4">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <div className="flex items-center justify-center border-2 border-gray-100 rounded-xl px-4 py-2 bg-gray-50 shadow-inner w-fit mx-auto sm:mx-0">
+              <div className="flex items-center justify-center border-2 border-gray-100 rounded-xl px-4 py-2 bg-[#FAF9F6] shadow-inner w-fit mx-auto sm:mx-0">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="w-8 h-8 flex items-center justify-center font-bold text-gray-400 hover:text-black transition-colors"
+                  className="w-8 h-8 flex items-center justify-center font-bold text-gray-400 hover:text-[#1A1A1A] transition-colors"
                 >
                   -
                 </button>
-                <span className="w-10 text-center font-bold text-lg">
+                <span className="w-10 text-center font-semibold text-lg">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity((q) => q + 1)}
-                  className="w-8 h-8 flex items-center justify-center font-bold text-gray-400 hover:text-black transition-colors"
+                  className="w-8 h-8 flex items-center justify-center font-bold text-gray-400 hover:text-[#1A1A1A] transition-colors"
                 >
                   +
                 </button>
@@ -273,17 +297,17 @@ const ProductDetail = ({ productId }) => {
               <button
                 onClick={handleToast}
                 disabled={isAddingToCart}
-                className={`group relative flex-1 py-4 rounded-xl font-bold overflow-hidden transition-all duration-300 uppercase tracking-widest text-xs ${
+                className={`group relative flex-1 py-4 rounded-xl font-semibold overflow-hidden transition-all duration-300 uppercase tracking-widest text-xs ${
                   isAddingToCart
                     ? "bg-gray-400 text-white cursor-not-allowed"
-                    : "bg-black text-white shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.4)] hover:scale-[1.02] active:scale-95"
+                    : "bg-[#1A1A1A] text-white shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:shadow-[0_8px_35px_rgba(201,168,94,0.35)] hover:scale-[1.02] active:scale-95"
                 }`}
               >
                 <span className="relative z-10">
                   {isAddingToCart ? "Adding..." : "Add to Cart"}
                 </span>
                 {!isAddingToCart && (
-                  <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/15 to-transparent"></span>
+                  <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-[#C9A85E]/25 to-transparent"></span>
                 )}
               </button>
             </div>
@@ -292,16 +316,18 @@ const ProductDetail = ({ productId }) => {
           {/* Info */}
           <div className="pt-8 border-t border-gray-100 flex flex-wrap gap-8">
             <div>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest">
                 Brand
               </p>
-              <p className="font-bold text-gray-900">{selectProduct.brand}</p>
+              <p className="font-semibold text-[#1A1A1A]">
+                {selectProduct.brand}
+              </p>
             </div>
             <div>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest">
                 Material
               </p>
-              <p className="font-bold text-gray-900">
+              <p className="font-semibold text-[#1A1A1A]">
                 {selectProduct.material}
               </p>
             </div>
@@ -310,10 +336,20 @@ const ProductDetail = ({ productId }) => {
       </div>
 
       {/* similar product */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 md:py-16">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 md:mb-8 text-center md:text-left">
-          You May Also Like
-        </h1>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 md:py-20">
+        <div className="text-center md:text-left mb-8 md:mb-10">
+          <span className="text-[11px] font-medium tracking-[0.35em] uppercase text-[#8A6A3D]">
+            Complete the Look
+          </span>
+          <span
+            className="block h-px w-8 bg-gradient-to-r from-[#C9A85E] to-transparent mt-2.5 mx-auto md:mx-0"
+            style={{ animation: "pdLineGrow 0.7s ease-out 0.2s both" }}
+          ></span>
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#1A1A1A] mt-4 tracking-tight">
+            You May Also Like
+          </h2>
+        </div>
+
         <ProductGrid
           products={similarProducts}
           loading={similarLoading}
