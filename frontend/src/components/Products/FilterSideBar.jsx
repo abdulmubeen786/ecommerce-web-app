@@ -18,11 +18,27 @@ const FilterSideBar = () => {
 
   const [priceRange, SetPriceRange] = useState([0, 100]);
 
+  // NEW: track which sections are open (click based instead of hover)
+  const [openSections, setOpenSections] = useState({
+    category: false,
+    gender: false,
+    colors: false,
+    sizes: false,
+    material: false,
+    brand: false,
+  });
+
+  const toggleSection = (key) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
   const categorys = ["Top Wear", "Bottom Wear"];
 
   const colors = ["Charcoal", "Dark Green", "Navy"];
 
-  // color name -> actual hex code mapping
   const colorMap = {
     Charcoal: "#36454F",
     "Dark Green": "#1B4332",
@@ -60,7 +76,6 @@ const FilterSideBar = () => {
 
   const genders = ["Men", "Women"];
 
-  // Load filters from URL
   useEffect(() => {
     const params = Object.fromEntries([...searchParams]);
 
@@ -78,7 +93,6 @@ const FilterSideBar = () => {
     SetPriceRange([0, Number(params.maxPrice) || 100]);
   }, [searchParams]);
 
-  // Update URL Params
   const updateFilter = (key, value) => {
     const newFilter = {
       ...filter,
@@ -133,19 +147,30 @@ const FilterSideBar = () => {
         </button>
       </div>
 
-      {/* Category Filter — hover to reveal */}
-      <div className="group mb-6 pb-6 border-b border-gray-100">
-        <div className="flex items-center justify-between cursor-default select-none">
+      {/* Category Filter — click to toggle */}
+      <div className="mb-6 pb-6 border-b border-gray-100">
+        <div
+          onClick={() => toggleSection("category")}
+          className="flex items-center justify-between cursor-pointer select-none"
+        >
           <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
             Category
           </label>
           <ChevronDown
             size={16}
-            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+            className={`text-gray-400 transition-transform duration-300 ${
+              openSections.category ? "rotate-180" : ""
+            }`}
           />
         </div>
 
-        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            openSections.category
+              ? "max-h-96 opacity-100 mt-3"
+              : "max-h-0 opacity-0"
+          }`}
+        >
           <div className="space-y-2.5">
             {categorys.map((category) => (
               <label
@@ -171,19 +196,30 @@ const FilterSideBar = () => {
         </div>
       </div>
 
-      {/* Gender Filter — hover to reveal */}
-      <div className="group mb-6 pb-6 border-b border-gray-100">
-        <div className="flex items-center justify-between cursor-default select-none">
+      {/* Gender Filter — click to toggle */}
+      <div className="mb-6 pb-6 border-b border-gray-100">
+        <div
+          onClick={() => toggleSection("gender")}
+          className="flex items-center justify-between cursor-pointer select-none"
+        >
           <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
             Gender
           </label>
           <ChevronDown
             size={16}
-            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+            className={`text-gray-400 transition-transform duration-300 ${
+              openSections.gender ? "rotate-180" : ""
+            }`}
           />
         </div>
 
-        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            openSections.gender
+              ? "max-h-96 opacity-100 mt-3"
+              : "max-h-0 opacity-0"
+          }`}
+        >
           <div className="space-y-2.5">
             {genders.map((gender) => (
               <label
@@ -209,19 +245,30 @@ const FilterSideBar = () => {
         </div>
       </div>
 
-      {/* Colors Filter — hover to reveal */}
-      <div className="group mb-6 pb-6 border-b border-gray-100">
-        <div className="flex items-center justify-between cursor-default select-none">
+      {/* Colors Filter — click to toggle */}
+      <div className="mb-6 pb-6 border-b border-gray-100">
+        <div
+          onClick={() => toggleSection("colors")}
+          className="flex items-center justify-between cursor-pointer select-none"
+        >
           <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
             Colors
           </label>
           <ChevronDown
             size={16}
-            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+            className={`text-gray-400 transition-transform duration-300 ${
+              openSections.colors ? "rotate-180" : ""
+            }`}
           />
         </div>
 
-        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            openSections.colors
+              ? "max-h-96 opacity-100 mt-3"
+              : "max-h-0 opacity-0"
+          }`}
+        >
           <div className="flex flex-wrap gap-3">
             {colors.map((color, index) => (
               <button
@@ -248,19 +295,30 @@ const FilterSideBar = () => {
         </div>
       </div>
 
-      {/* Size Filter — hover to reveal */}
-      <div className="group mb-6 pb-6 border-b border-gray-100">
-        <div className="flex items-center justify-between cursor-default select-none">
+      {/* Size Filter — click to toggle */}
+      <div className="mb-6 pb-6 border-b border-gray-100">
+        <div
+          onClick={() => toggleSection("sizes")}
+          className="flex items-center justify-between cursor-pointer select-none"
+        >
           <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
             Size
           </label>
           <ChevronDown
             size={16}
-            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+            className={`text-gray-400 transition-transform duration-300 ${
+              openSections.sizes ? "rotate-180" : ""
+            }`}
           />
         </div>
 
-        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            openSections.sizes
+              ? "max-h-96 opacity-100 mt-3"
+              : "max-h-0 opacity-0"
+          }`}
+        >
           <div className="flex flex-wrap gap-2">
             {sizes.map((size) => {
               const active = filter.sizes.includes(size);
@@ -290,19 +348,30 @@ const FilterSideBar = () => {
         </div>
       </div>
 
-      {/* Material Filter — hover to reveal */}
-      <div className="group mb-6 pb-6 border-b border-gray-100">
-        <div className="flex items-center justify-between cursor-default select-none">
+      {/* Material Filter — click to toggle */}
+      <div className="mb-6 pb-6 border-b border-gray-100">
+        <div
+          onClick={() => toggleSection("material")}
+          className="flex items-center justify-between cursor-pointer select-none"
+        >
           <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
             Material
           </label>
           <ChevronDown
             size={16}
-            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+            className={`text-gray-400 transition-transform duration-300 ${
+              openSections.material ? "rotate-180" : ""
+            }`}
           />
         </div>
 
-        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            openSections.material
+              ? "max-h-96 opacity-100 mt-3"
+              : "max-h-0 opacity-0"
+          }`}
+        >
           <div className="space-y-2.5 max-h-40 overflow-y-auto pr-1">
             {materials.map((material) => (
               <label
@@ -347,19 +416,30 @@ const FilterSideBar = () => {
         </div>
       </div>
 
-      {/* Brand Filter — hover to reveal */}
-      <div className="group mb-6 pb-6 border-b border-gray-100">
-        <div className="flex items-center justify-between cursor-default select-none">
+      {/* Brand Filter — click to toggle */}
+      <div className="mb-6 pb-6 border-b border-gray-100">
+        <div
+          onClick={() => toggleSection("brand")}
+          className="flex items-center justify-between cursor-pointer select-none"
+        >
           <label className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
             Brand
           </label>
           <ChevronDown
             size={16}
-            className="text-gray-400 transition-transform duration-300 group-hover:rotate-180"
+            className={`text-gray-400 transition-transform duration-300 ${
+              openSections.brand ? "rotate-180" : ""
+            }`}
           />
         </div>
 
-        <div className="max-h-0 opacity-0 overflow-hidden group-hover:max-h-96 group-hover:opacity-100 group-hover:mt-3 transition-all duration-300 ease-in-out">
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            openSections.brand
+              ? "max-h-96 opacity-100 mt-3"
+              : "max-h-0 opacity-0"
+          }`}
+        >
           <div className="space-y-2.5 max-h-40 overflow-y-auto pr-1">
             {brands.map((brand) => (
               <label
@@ -404,7 +484,7 @@ const FilterSideBar = () => {
         </div>
       </div>
 
-      {/* Price Range — always visible (slider, not a list) */}
+      {/* Price Range — always visible */}
       <div>
         <label className="block font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
           Price Range
